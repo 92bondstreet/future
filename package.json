@@ -1,0 +1,16 @@
+{
+  "devDependencies": {
+    "babel-eslint": "9.0.0",
+    "eslint": "^5.13.0"
+  },
+  "dependencies": {
+    "elasticsearch": "^15.4.1",
+    "google-it": "git+ssh://git@github.com/92bondstreet/google-it.git",
+    "is-url": "^1.2.4",
+    "p-limit": "^2.1.0",
+    "p-settle": "^2.1.0",
+    "parse-domain": "^2.1.7",
+    "uuid": "^3.3.2",
+    "yargs": "^13.1.0"
+  }
+}
