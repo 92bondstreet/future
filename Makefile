@@ -1,12 +1,13 @@
 SHELL := /bin/bash
 
 ats: ## search query on ats saas with google help
+	mkdir -p output
 	node bin/ats.js $(filter-out $@,$(MAKECMDGOALS))
 
 startups: ## Get the json of current startups hiring remotely
 	mkdir -p raw
 	curl -o raw/spreadsheets.csv "https://docs.google.com/spreadsheets/d/1TLJSlNxCbwRNxy14Toe1PYwbCTY7h0CNHeer9J0VRzE/export?format=csv"
-	tail -n +7 raw/spreadsheets.csv > raw/startups.csv
+	tail -n +8 raw/spreadsheets.csv > raw/startups.csv
 	rm raw/spreadsheets.csv
 	csv2json raw/startups.csv raw/startups.json
 
