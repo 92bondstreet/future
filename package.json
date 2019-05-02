@@ -4,6 +4,8 @@
     "eslint": "^5.13.0"
   },
   "dependencies": {
+    "algoliasearch": "^3.32.1",
+    "dotenv": "^7.0.0",
     "elasticsearch": "^15.4.1",
     "google-it": "git+ssh://git@github.com/92bondstreet/google-it.git",
     "is-url": "^1.2.4",

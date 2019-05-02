@@ -92,7 +92,7 @@ const headlessify = async configuration => {
   const results = await pSettle(promises);
   const isFulfilled = results.filter(result => result.isFulfilled).map(result => result.value);
 
-  console.info('🚀 Done');
+  console.info('🚀 searching in headless way done');
 
   return [].concat.apply([], isFulfilled);
 };

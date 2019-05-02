@@ -1,4 +1,4 @@
-const {es, google, save} = require('../src');
+const {search, google, save} = require('../src');
 const {ATS_SAAS} = require('../src/constants');
 
 const DEFAULT = {
@@ -15,28 +15,45 @@ async function bin (argv) {
   try {
     const {clean, query} = argv;
     const configuration = Object.assign({}, DEFAULT, argv, {'sites': ATS_SAAS});
+    const engine = search[argv.engine];
     const results = await google(configuration);
 
     save(results, query);
 
     if (clean) {
-      await es.clean('future');
+      await engine.clean('future');
     }
 
-    await es.bulk({results, query, 'index': 'future', 'type': 'ats'});
+    await engine.bulk({results, query, 'index': 'ats', 'type': 'ats'});
+
+    console.info('📡 search engine ready');
   } catch (e) {
     console.error(e);
   }
 }
 
 const argv = module.exports = require('yargs')
-  .usage('usage: future  -c=<clean> -q=<query> -p=<proxy>')
+  .usage('usage: future  -c=<clean> -l=<limit> -q=<query> -p=<proxy>')
   .option('clean', {
     'alias': 'c',
     'default': false,
     'demand': false,
     'description': 'clean search engine',
     'type': 'boolean'
+  })
+  .option('engine', {
+    'alias': 'e',
+    'default': 'algolia',
+    'demand': false,
+    'description': 'search engine for indexing',
+    'type': 'string'
+  })
+  .option('limit', {
+    'alias': 'l',
+    'default': DEFAULT.limit,
+    'demand': false,
+    'description': 'number of google results',
+    'type': 'integer'
   })
   .option('query', {
     'alias': 's',

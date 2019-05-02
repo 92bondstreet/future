@@ -2,8 +2,10 @@ const elasticsearch = require('elasticsearch');
 const parseDomain = require('parse-domain');
 const uuidv5 = require('uuid/v5');
 
+const {ES_HOST} = require('../constants');
+
 const esClient = new elasticsearch.Client({
-  'host': 'http://localhost:9200',
+  'host': ES_HOST,
   'log': 'error'
 });
 
