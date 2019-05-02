@@ -6,7 +6,7 @@ const {ALGOLIA_APPLICATION_ID, ALGOLIA_API_KEY} = require('../constants');
 
 let algolia = null;
 
-const getIndex = module.exports.getIndex = async (key = ALGOLIA_API_KEY) => {
+const getIndex = module.exports.getIndex = async (index, key = ALGOLIA_API_KEY) => {
   if (algolia) {
     return algolia;
   }
@@ -14,7 +14,7 @@ const getIndex = module.exports.getIndex = async (key = ALGOLIA_API_KEY) => {
   try {
     const client = algoliasearch(ALGOLIA_APPLICATION_ID, key);
 
-    algolia = client.initIndex('ats');
+    algolia = client.initIndex(index);
 
     return algolia;
   } catch (error) {
@@ -41,10 +41,26 @@ module.exports.bulk = async configuration => {
 
       return result;
     });
-    const index = await getIndex();
+    const index = await getIndex(configuration.index);
     const content = await index.addObjects(documents);
 
     return content;
+  } catch (error) {
+    console.error(error);
+    return {};
+  }
+};
+
+/**
+ * Add documents
+ * @param  {Array}  documents
+ * @return {Object}
+ */
+module.exports.add = async (documents, idx) => {
+  try {
+    const index = await getIndex(idx);
+
+    return await index.addObjects(documents);
   } catch (error) {
     console.error(error);
     return {};

@@ -18,5 +18,6 @@ module.exports = {
   ALGOLIA_APPLICATION_ID,
   ALGOLIA_API_KEY,
   ATS_SAAS,
-  ES_HOST
+  ES_HOST,
+  'P_LIMIT': 10
 };
