@@ -1,17 +1,45 @@
+const cheerio = require('cheerio');
+const cleanTextUtils = require('clean-text-utils');
+const fetch = require('node-fetch');
 const Mercury = require('@postlight/mercury-parser');
 const pLimit = require('p-limit');
 const pSettle = require('p-settle');
 const {P_LIMIT} = require('./constants');
 const STARTUPS = require('../raw/startups.json');
 
+/**
+ * Compute size from string value
+ * @param  {String} [value='']
+ * @return {Number}
+ */
 const getBytes = (value = '') => {
   return Buffer.byteLength(value, 'utf8');
 };
 
+/**
+ * Get list of jobpages
+ * @return {Array}
+ */
 const jobpage = () => {
   return STARTUPS
     .map(startup => startup['Link to jobpage'])
     .filter(page => page !== '');
+};
+
+/**
+ * Parse a given job page with Mercury
+ * @param  {String} page
+ * @return {String}
+ */
+const mercuryParse = async page => { //eslint-disable-line
+  try {
+    const response = await Mercury.parse(page, {'contentType': 'text'});
+
+    return response;
+  } catch (error) {
+    console.error(error);
+    return {};
+  }
 };
 
 /**
@@ -21,9 +49,19 @@ const jobpage = () => {
  */
 const parse = async page => {
   try {
-    const response = await Mercury.parse(page, {'contentType': 'text'});
+    const response = await fetch(page);
+    const body = await response.text();
+    const $ = cheerio.load(body);
 
-    return response;
+    let content = cleanTextUtils.strip.extraSpace($('body').text());
+
+    content = cleanTextUtils.strip.newlines(content);
+    content = cleanTextUtils.strip.nonASCII(content);
+
+    return {
+      content,
+      'url': page
+    };
   } catch (error) {
     console.error(error);
     return {};

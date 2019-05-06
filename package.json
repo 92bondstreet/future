@@ -6,10 +6,13 @@
   "dependencies": {
     "@postlight/mercury-parser": "^2.1.0",
     "algoliasearch": "^3.32.1",
+    "cheerio": "^1.0.0-rc.3",
+    "clean-text-utils": "^1.1.17",
     "dotenv": "^7.0.0",
     "elasticsearch": "^15.4.1",
     "google-it": "git+ssh://git@github.com/92bondstreet/google-it.git",
     "is-url": "^1.2.4",
+    "node-fetch": "^2.5.0",
     "p-limit": "^2.2.0",
     "p-settle": "^3.1.0",
     "parse-domain": "^2.1.7",
